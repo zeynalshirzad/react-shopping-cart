@@ -1,13 +1,15 @@
 // feature 1
-import data from './data.json'
+import Products from './components/Products/Products'
+import data from './data.js'
 function App() {
+  console.log(data.products);
   return (
     <div className="grid-container">
       <header>
         <a href="/">React Shopping Cart</a>
       </header>
       <main>
-        Product List
+        <Products products={data.products} />
       </main>
     </div>
   )
