@@ -1,17 +1,23 @@
 // feature 1
-import Products from './components/Products/Products'
-import data from './data.js'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import HomePage from './pages/home/HomePage'
+import ProductPage from './pages/product/ProductPage'
+
 function App() {
-  console.log(data.products);
   return (
-    <div className="grid-container">
-      <header>
-        <a href="/">React Shopping Cart</a>
-      </header>
-      <main>
-        <Products products={data.products} />
-      </main>
-    </div>
+    <BrowserRouter>
+      <div className="grid-container">
+        <header>
+          <Link to="/">React Shopping Cart</Link>
+        </header>
+        <main>
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/product/:slug' element={<ProductPage />} />
+          </Routes>
+        </main>
+      </div>
+    </BrowserRouter>
   )
 }
 

@@ -1,14 +1,15 @@
+import { Link } from 'react-router-dom'
 import './product.css'
 export default function Product({ product }) {
     return (
         <div className="product">
-            <a href={`/product/${product.slug}`}>
+            <Link to={`/product/${product.slug}`}>
                 <img src={product.image} alt={product.name} />
-            </a>
+            </Link>
             <div className='product-info'>
-                <a href={`/product/${product.slug}`}>
+                <Link to={`/product/${product.slug}`}>
                     <p>{product.name}</p>
-                </a>
+                </Link>
                 <p><strong>${product.price}</strong></p>
                 <button>Add to cart</button>
             </div>
