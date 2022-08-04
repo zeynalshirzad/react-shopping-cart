@@ -7,9 +7,11 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import { useParams } from "react-router-dom"
-import { fetchProduct, fetchSucceed, initalState, reducer } from '../../context/pruductReducer'
+import { fetchFailed, fetchProduct, fetchSucceed, initalState, reducer } from '../../context/pruductReducer'
 import Rating from "../../components/Rating"
 import { Helmet } from "react-helmet-async"
+import Loading from "../../components/utils/Loading"
+import MessageBox from "../../components/utils/MessageBox"
 
 export default function ProductPage() {
     const { slug } = useParams()
@@ -19,21 +21,26 @@ export default function ProductPage() {
     useEffect(() => {
         dispatch(fetchProduct())
         const LoadProduct = async () => {
-            const response = await axios.get(`/api/product/${slug}`)
-            dispatch(fetchSucceed(response.data))
+            try {
+                const response = await axios.get(`/api/product/${slug}`)
+                dispatch(fetchSucceed(response.data))
+            } catch (err) {
+                dispatch(fetchFailed(err.response.data.message))
+            }
+
         }
         LoadProduct()
     }, [slug])
 
-    const loadingCm = <div>Product is loading ...</div>
-    const errorCM = <div>{error}</div>
+    // const loadingCm = <div>Product is loading ...</div>
+    // const errorCM = <div>{error}</div>
     return (
         <>
             {
                 loading ? (
-                    loadingCm
+                    <Loading />
                 ) : error ? (
-                    errorCM
+                    <MessageBox variant='danger' message={error} />
                 ) : (
                     <div>
                         <Row>

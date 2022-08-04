@@ -6,6 +6,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Product from "../Product"
 import './products.css'
+import Loading from "../utils/Loading"
+import MessageBox from "../utils/MessageBox"
 
 export default function Products() {
 
@@ -28,22 +30,26 @@ export default function Products() {
 
     const productCms = products?.map(product => (
         <Col key={product.id} sm={6} md={4} lg={3} className="mb-3">
-            <Product  product={product} />
+            <Product product={product} />
         </Col>
     ))
 
-    const loadCm = <h1>Data is loading ...</h1>
-    const errorCm = <h1>{error}</h1>
+    // const loadCm = <h1>Data is loading ...</h1>
+    // const errorCm = <h1>{error}</h1>
 
     return (
         <>
             <h1>Featured Products</h1>
             <div className="products">
-                {loading ? loadCm :
-                    error ? errorCm :
-                        <Row>
-                            {productCms}
-                        </Row>
+                {loading ? (
+                    <Loading />
+                ) : error ? (
+                    <MessageBox variant='danger' message={error} />
+                ) : (
+                    <Row>
+                        {productCms}
+                    </Row>
+                )
                 }
             </div>
         </>
