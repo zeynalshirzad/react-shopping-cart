@@ -18,14 +18,15 @@ import { Store } from "../../context/Store"
 export default function ProductPage() {
     const { slug } = useParams()
     const [state, dispatch] = useReducer(reducer, initalState)
-    const {state: ctxState, dispatch: ctxDispatch} = useContext(Store)
+    const { state: ctxState, dispatch: ctxDispatch } = useContext(Store)
+    const { cart } = ctxState
     const { loading, product, error } = state
 
     useEffect(() => {
         dispatch(fetchProduct())
         const LoadProduct = async () => {
             try {
-                const response = await axios.get(`/api/product/${slug}`)
+                const response = await axios.get(`/api/products/slug/${slug}`)
                 dispatch(fetchSucceed(response.data))
             } catch (err) {
                 dispatch(fetchFailed(err.response.data.message))
@@ -35,9 +36,18 @@ export default function ProductPage() {
         LoadProduct()
     }, [slug])
 
-    const addToCartHandler = () => {
+
+
+    const addToCartHandler = async () => {
         debugger
-        ctxDispatch({type: 'CART_ADD_ITEM', payload: {...product, quantity: 1}})
+        const existItem = cart.cartItems.find(p => p._id === product._id)
+        const quantity = existItem ? existItem.quantity + 1 : 1
+        const { data } = await axios.get(`/api/products/${product._id}`)
+        if (data.countInStock < quantity) {
+            window.alert('Sorry. Product is out of stock')
+            return
+        }
+        ctxDispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
     }
 
     return (

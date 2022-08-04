@@ -13,8 +13,9 @@ export const reducer = produce((state, action) => {
     debugger
     switch (action.type) {
         case actionTypes.CART_ADD_ITEM:
-            state.cart.cartItems.push(action.payload)
-            console.log(state.cart.cartItems);
+            const newItem = action.payload
+            const existItem = state.cart.cartItems.find(p => p._id === newItem._id)
+            existItem ? existItem.quantity++ : state.cart.cartItems.push(action.payload)
             break
         default:
             break
