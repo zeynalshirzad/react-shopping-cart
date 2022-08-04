@@ -1,7 +1,6 @@
 import axios from "axios"
-import { useEffect } from "react"
-import { useAuthDispatch, useAuthState } from "../../context"
-import { fetchFailed, fetchProducts, fetchSucceed } from "../../context/reducer"
+import { useEffect, useReducer } from "react"
+import { reducer, initalState, fetchFailed, fetchProducts, fetchSucceed } from "./productsReducer"
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Product from "../Product"
@@ -11,8 +10,8 @@ import MessageBox from "../utils/MessageBox"
 
 export default function Products() {
 
-    const dispatch = useAuthDispatch()
-    const { loading, error, products } = useAuthState()
+    const [state, dispatch] = useReducer(reducer, initalState)
+    const { loading, error, products } = state
 
     useEffect(() => {
         const loadProducts = async () => {
@@ -33,9 +32,6 @@ export default function Products() {
             <Product product={product} />
         </Col>
     ))
-
-    // const loadCm = <h1>Data is loading ...</h1>
-    // const errorCm = <h1>{error}</h1>
 
     return (
         <>

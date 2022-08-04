@@ -7,15 +7,18 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import { useParams } from "react-router-dom"
-import { fetchFailed, fetchProduct, fetchSucceed, initalState, reducer } from '../../context/pruductReducer'
+import { fetchFailed, fetchProduct, fetchSucceed, initalState, reducer } from './pruductReducer'
 import Rating from "../../components/Rating"
 import { Helmet } from "react-helmet-async"
 import Loading from "../../components/utils/Loading"
 import MessageBox from "../../components/utils/MessageBox"
+import { useContext } from "react"
+import { Store } from "../../context/Store"
 
 export default function ProductPage() {
     const { slug } = useParams()
     const [state, dispatch] = useReducer(reducer, initalState)
+    const {state: ctxState, dispatch: ctxDispatch} = useContext(Store)
     const { loading, product, error } = state
 
     useEffect(() => {
@@ -32,8 +35,11 @@ export default function ProductPage() {
         LoadProduct()
     }, [slug])
 
-    // const loadingCm = <div>Product is loading ...</div>
-    // const errorCM = <div>{error}</div>
+    const addToCartHandler = () => {
+        debugger
+        ctxDispatch({type: 'CART_ADD_ITEM', payload: {...product, quantity: 1}})
+    }
+
     return (
         <>
             {
@@ -92,7 +98,7 @@ export default function ProductPage() {
                                             {product.countInStock > 0 && (
                                                 <ListGroup.Item>
                                                     <div className="d-grid">
-                                                        <Button variant="primary">
+                                                        <Button onClick={addToCartHandler} variant="primary">
                                                             Add to Cart
                                                         </Button>
                                                     </div>
@@ -100,7 +106,6 @@ export default function ProductPage() {
                                             )}
                                         </ListGroup>
                                     </Card.Body>
-
                                 </Card>
                             </Col>
                         </Row>

@@ -3,9 +3,17 @@ import HomePage from './pages/home/HomePage'
 import ProductPage from './pages/product/ProductPage'
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
 import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
+import Badge from 'react-bootstrap/Badge'
+import { useContext } from 'react'
+import { Store } from './context/Store'
 
 function App() {
+  const { state: ctxState } = useContext(Store)
+  const { cart } = ctxState
+
   return (
     <BrowserRouter>
       <div className='d-flex flex-column site-container'>
@@ -15,6 +23,18 @@ function App() {
               <LinkContainer to='/'>
                 <Navbar.Brand>Shopazon</Navbar.Brand>
               </LinkContainer>
+              <Nav className="me-auto">
+                <Link to='/cart' className='nav-link'>
+                  Cart
+                  {
+                    cart.cartItems.length > 0 && (
+                      <Badge pill bg='danger'>
+                        {cart.cartItems.length}
+                      </Badge>
+                    )
+                  }
+                </Link>
+              </Nav>
             </Container>
           </Navbar>
         </header>
