@@ -1,8 +1,14 @@
+import { Helmet } from 'react-helmet-async'
 import Products from '../../components/Products'
 
 export default function HomePage() {
 
     return (
-        <Products />
+        <>
+            <Helmet>
+                <title>Shopazon</title>
+            </Helmet>
+            <Products />
+        </>
     )
 }

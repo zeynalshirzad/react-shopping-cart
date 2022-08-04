@@ -28,7 +28,7 @@ export default function Products() {
 
     const productCms = products?.map(product => (
         <Col key={product.id} sm={6} md={4} lg={3} className="mb-3">
-            <Product product={product} />
+            <Product  product={product} />
         </Col>
     ))
 
