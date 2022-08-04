@@ -2,6 +2,8 @@ import axios from "axios"
 import { useEffect } from "react"
 import { useAuthDispatch, useAuthState } from "../../context"
 import { fetchFailed, fetchProducts, fetchSucceed } from "../../context/reducer"
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import Product from "../Product"
 import './products.css'
 
@@ -25,7 +27,9 @@ export default function Products() {
     }, [dispatch])
 
     const productCms = products?.map(product => (
-        <Product key={product.id} product={product} />
+        <Col key={product.id} sm={6} md={4} lg={3} className="mb-3">
+            <Product product={product} />
+        </Col>
     ))
 
     const loadCm = <h1>Data is loading ...</h1>
@@ -37,7 +41,10 @@ export default function Products() {
             <div className="products">
                 {loading ? loadCm :
                     error ? errorCm :
-                    productCms}
+                        <Row>
+                            {productCms}
+                        </Row>
+                }
             </div>
         </>
     )
