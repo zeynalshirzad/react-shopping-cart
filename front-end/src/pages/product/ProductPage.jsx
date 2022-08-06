@@ -6,7 +6,7 @@ import Card from "react-bootstrap/Card"
 import ListGroup from 'react-bootstrap/ListGroup'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { fetchFailed, fetchProduct, fetchSucceed, initalState, reducer } from './pruductReducer'
 import Rating from "../../components/Rating"
 import { Helmet } from "react-helmet-async"
@@ -16,6 +16,7 @@ import { useContext } from "react"
 import { Store } from "../../context/Store"
 
 export default function ProductPage() {
+    const navigate = useNavigate()
     const { slug } = useParams()
     const [state, dispatch] = useReducer(reducer, initalState)
     const { state: ctxState, dispatch: ctxDispatch } = useContext(Store)
@@ -39,7 +40,6 @@ export default function ProductPage() {
 
 
     const addToCartHandler = async () => {
-        debugger
         const existItem = cart.cartItems.find(p => p._id === product._id)
         const quantity = existItem ? existItem.quantity + 1 : 1
         const { data } = await axios.get(`/api/products/${product._id}`)
@@ -48,6 +48,7 @@ export default function ProductPage() {
             return
         }
         ctxDispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
+        navigate('/cart')
     }
 
     return (
