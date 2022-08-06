@@ -7,11 +7,13 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import MessageBox from "../../components/utils/MessageBox"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import './cart.css'
+import axios from "axios"
 
 export default function CartPage() {
 
+    const navigate = useNavigate()
     const { state: ctxState, dispatch: ctxDispatch } = useContext(Store)
     const {
         cart: { cartItems }
@@ -19,6 +21,24 @@ export default function CartPage() {
 
     const subtotal = cartItems.reduce((a, c) => a + c.quantity, 0)
     const subtotalPrice = cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
+
+    const updateItemQuantityHandler = async (item, num) => {
+        const newQuantity = item.quantity + num
+        const { data } = await axios.get(`/api/products/${item._id}`)
+        if (data.countInStock < newQuantity) {
+            window.alert('Sorry. Product is out of stock')
+            return
+        }
+        ctxDispatch({ type: 'CART_UPDATE_ITEM_QUANTITY', payload: { ...item, quantity: newQuantity } })
+    }
+
+    const deleteItemInCartHandler = async (itemId) => {
+        ctxDispatch({ type: 'CART_DELETE_ITEM', payload: itemId })
+    }
+
+    const checkoutHandler = () => {
+        navigate('/signin?redirect=/shipping')
+    }
 
     return (
         <div>
@@ -28,12 +48,14 @@ export default function CartPage() {
             <h1>Shopping Cart</h1>
             <Row>
                 <Col md={8}>
-                    {cartItems === 0 ? (
-                        <MessageBox message={`Cart is empty ${<Link to="/">Go Shopping</Link>}`} />
+                    {cartItems.length === 0 ? (
+                        <MessageBox message={`Cart is empty` +  <Link to="/">Go Shopping</Link>}>
+                            Cart is empty {<Link to="/">Go Shopping</Link>}
+                        </MessageBox>
                     ) : (
                         <ListGroup>
                             {cartItems.map(item => (
-                                <ListGroup.Item>
+                                <ListGroup.Item key={item._id}>
                                     <Row className="align-items-center">
                                         <Col md={4}>
                                             <img src={item.image} alt={item.name} className="img-fluid rounded img-thumbnail" />
@@ -41,13 +63,19 @@ export default function CartPage() {
                                             <Link to={`/product/${item.slug}`}>{item.name}</Link>
                                         </Col>
                                         <Col md={3}>
-                                            <Button variant="light" disabled={item.quantity === 1}>
+                                            <Button
+                                                onClick={() => updateItemQuantityHandler(item, -1)}
+                                                variant="light"
+                                                disabled={item.quantity === 1}>
                                                 <i className="fas fa-minus-circle" />
                                             </Button>
                                             {' '}
                                             <span>{item.quantity}</span>
                                             {' '}
-                                            <Button variant="light" disabled={item.quantity === item.countInStock}>
+                                            <Button
+                                                onClick={() => updateItemQuantityHandler(item, 1)}
+                                                variant="light"
+                                                disabled={item.quantity === item.countInStock}>
                                                 <i className="fas fa-plus-circle"></i>
                                             </Button>
                                         </Col>
@@ -55,7 +83,7 @@ export default function CartPage() {
                                             ${item.price}
                                         </Col>
                                         <Col md={2}>
-                                            <Button variant="light">
+                                            <Button variant="light" onClick={() => deleteItemInCartHandler(item._id)}>
                                                 <i className="fas fa-trash"></i>
                                             </Button>
                                         </Col>
@@ -76,7 +104,10 @@ export default function CartPage() {
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <div className="d-grid">
-                                        <Button type="button" variant="primary" disabled={cartItems.length === 0}>
+                                        <Button
+                                            onClick={checkoutHandler}
+                                            variant="primary"
+                                            disabled={cartItems.length === 0}>
                                             Proceed to Checkout
                                         </Button>
                                     </div>

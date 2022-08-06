@@ -28,7 +28,7 @@ export default function Products() {
     }, [dispatch])
 
     const productCms = products?.map(product => (
-        <Col key={product.id} sm={6} md={4} lg={3} className="mb-3">
+        <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
             <Product product={product} />
         </Col>
     ))
@@ -40,7 +40,9 @@ export default function Products() {
                 {loading ? (
                     <Loading />
                 ) : error ? (
-                    <MessageBox variant='danger' message={error} />
+                    <MessageBox variant='danger'>
+                        {error} 
+                    </MessageBox>
                 ) : (
                     <Row>
                         {productCms}

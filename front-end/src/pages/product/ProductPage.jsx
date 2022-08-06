@@ -57,7 +57,9 @@ export default function ProductPage() {
                 loading ? (
                     <Loading />
                 ) : error ? (
-                    <MessageBox variant='danger' message={error} />
+                    <MessageBox variant='danger'>
+                        {error} 
+                    </MessageBox>
                 ) : (
                     <div>
                         <Row>
