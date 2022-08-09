@@ -3,7 +3,8 @@ import produce from 'immer'
 export const initalState = {
     userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null,
     cart: {
-        shippingAddress: localStorage.getItem('shippingAddress') ? localStorage.getItem('shippingAddress') : {},
+        shippingAddress: localStorage.getItem('shippingAddress') ? JSON.parse(localStorage.getItem('shippingAddress')) : {},
+        paymentMethod: localStorage.getItem('paymentMethod') ? localStorage.getItem('paymentMethod') : '',
         cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
     }
 }
@@ -14,7 +15,8 @@ const actionTypes = {
     CART_DELETE_ITEM: 'CART_DELETE_ITEM',
     USER_SIGNIN: 'USER_SIGNIN',
     USER_SIGNOUT: 'USER_SIGNOUT',
-    SAVE_SHIPPING_ADDRESS: 'SAVE_SHIPPING_ADDRESS'
+    SAVE_SHIPPING_ADDRESS: 'SAVE_SHIPPING_ADDRESS',
+    SAVE_PAYMENT_METHOD: 'SAVE_PAYMENT_METHOD'
 }
 export const reducer = produce((state, action) => {
     switch (action.type) {
@@ -42,10 +44,14 @@ export const reducer = produce((state, action) => {
         case actionTypes.USER_SIGNOUT:
             state.userInfo = null
             state.cart.shippingAddress = {}
-            state.cart.cartItems  = []
+            state.cart.cartItems = []
+            state.cart.paymentMethod = ''
             break
         case actionTypes.SAVE_SHIPPING_ADDRESS:
             state.cart.shippingAddress = action.payload
+            break
+        case actionTypes.SAVE_PAYMENT_METHOD:
+            state.cart.paymentMethod = action.payload
             break
         default:
             break

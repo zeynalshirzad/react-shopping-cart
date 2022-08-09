@@ -12,19 +12,20 @@ import { useContext } from 'react'
 import { Store } from './context/Store'
 import CartPage from './pages/cart/CartPage'
 import SigninPage from './pages/signin/SigninPage'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import ShippingAddressPage from './pages/shipping/ShippingAddressPage'
 import SignupPage from './pages/signup/SignupPage'
+import PaymentMethodPage from './pages/payment/PaymentMethodPage'
 
 function App() {
   const { state: ctxState, dispatch: ctxDispatch } = useContext(Store)
   const { cart, userInfo } = ctxState
-
   const signoutHandler = () => {
-    ctxDispatch({type: 'USER_SIGNOUT'})
+    ctxDispatch({ type: 'USER_SIGNOUT' })
     localStorage.removeItem('userInfo')
     localStorage.removeItem('shippingAddress')
+    localStorage.removeItem('paymentMethod')
   }
 
   return (
@@ -79,6 +80,7 @@ function App() {
               <Route path='/signin' element={<SigninPage />} />
               <Route path='/signup' element={<SignupPage />} />
               <Route path='/shipping' element={<ShippingAddressPage />} />
+              <Route path='/payment' element={<PaymentMethodPage />} />
             </Routes>
           </Container>
         </main>

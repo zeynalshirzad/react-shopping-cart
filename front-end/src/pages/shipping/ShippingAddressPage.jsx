@@ -11,7 +11,8 @@ export default function ShippingAddressPage() {
     const {
         userInfo,
         cart: {
-            shippingAddress
+            shippingAddress,
+            cartItems
         } } = ctxState
 
     const [fullName, setFullName] = useState(shippingAddress.fullName || '')
@@ -35,13 +36,13 @@ export default function ShippingAddressPage() {
         })
         localStorage.setItem(
             'shippingAddress',
-            {
+            JSON.stringify({
                 fullName,
                 address,
                 city,
                 postalCode,
                 country
-            }
+            })
         )
         navigate('/payment')
     }
@@ -49,6 +50,10 @@ export default function ShippingAddressPage() {
     useEffect(() => {
         if (!userInfo) {
             navigate('/signin?redirect=/shipping')
+            return
+        }
+        if(cartItems.length === 0){
+            navigate('/')
         }
     })
 
