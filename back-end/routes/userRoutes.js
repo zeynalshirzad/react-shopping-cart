@@ -7,9 +7,9 @@ import expressAsyncHandler from 'express-async-handler'
 const userRouter = express.Router()
 
 userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
-    const user = await User.findOne({email: req.body.email})
-    if(user){
-        if(bcrypt.compareSync(req.body.password, user.password)){
+    const user = await User.findOne({ email: req.body.email })
+    if (user) {
+        if (bcrypt.compareSync(req.body.password, user.password)) {
             res.send({
                 _id: user._id,
                 name: user.name,
@@ -20,7 +20,7 @@ userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
             return
         }
     }
-    res.status(401).send({message: 'Invalid email or password'})
+    res.status(401).send({ message: 'Invalid email or password' })
 }))
 
 export default userRouter

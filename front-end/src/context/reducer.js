@@ -1,6 +1,7 @@
 import produce from 'immer'
 
 export const initalState = {
+    userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null,
     cart: {
         cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
     }
@@ -9,7 +10,9 @@ export const initalState = {
 const actionTypes = {
     CART_ADD_ITEM: 'CART_ADD_ITEM',
     CART_UPDATE_ITEM_QUANTITY: 'CART_UPDATE_ITEM_QUANTITY',
-    CART_DELETE_ITEM: 'CART_DELETE_ITEM'
+    CART_DELETE_ITEM: 'CART_DELETE_ITEM',
+    USER_SIGNIN: 'USER_SIGNIN',
+    USER_SIGNOUT: 'USER_SIGNOUT'
 }
 export const reducer = produce((state, action) => {
     switch (action.type) {
@@ -30,6 +33,12 @@ export const reducer = produce((state, action) => {
             const deletedItemId = action.payload
             state.cart.cartItems = state.cart.cartItems.filter(p => p._id !== deletedItemId)
             localStorage.setItem('cartItems', JSON.stringify(state.cart.cartItems))
+            break
+        case actionTypes.USER_SIGNIN:
+            state.userInfo = action.payload
+            break
+        case actionTypes.USER_SIGNOUT:
+            state.userInfo = null
             break
         default:
             break
