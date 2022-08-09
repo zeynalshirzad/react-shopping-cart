@@ -107,3 +107,4 @@
 27. Create Place Order Page
     1. show cart items, payment and address
     2. calculate order summary
+    3. Fixed generated error due to freezing state by immer

@@ -12,19 +12,18 @@ import { Link, useNavigate } from 'react-router-dom'
 export default function PlaceOrderPage() {
 
     const { state: ctxState } = useContext(Store)
-    // const { cart } = ctxState
-    const { cart: cart1 } = ctxState
-    const {...cart} = cart1
+    const { cart } = ctxState
+
     const navigate = useNavigate()
 
     const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100
 
-    cart.itemsPrice = round2(
+    const itemsPrice = round2(
         cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
     )
-    cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10)
-    cart.taxPrice = round2(0.15 * cart.itemsPrice)
-    cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice
+    const shippingPrice = itemsPrice > 100 ? round2(0) : round2(10)
+    const taxPrice = round2(0.15 * itemsPrice)
+    const totalPrice = itemsPrice + shippingPrice + taxPrice
 
     const placeOrderHandler = async () => {
 
@@ -102,25 +101,19 @@ export default function PlaceOrderPage() {
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>Items</Col>
-                                        <Col>${cart.itemsPrice.toFixed(2)}</Col>
+                                        <Col>${itemsPrice.toFixed(2)}</Col>
                                     </Row>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>Shipping</Col>
-                                        <Col>${cart.shippingPrice.toFixed(2)}</Col>
+                                        <Col>${shippingPrice.toFixed(2)}</Col>
                                     </Row>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>Tax</Col>
-                                        <Col>${cart.taxPrice.toFixed(2)}</Col>
-                                    </Row>
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    <Row>
-                                        <Col>Items</Col>
-                                        <Col>${cart.itemsPrice.toFixed(2)}</Col>
+                                        <Col>${taxPrice.toFixed(2)}</Col>
                                     </Row>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
@@ -129,7 +122,7 @@ export default function PlaceOrderPage() {
                                             <strong>Order Total</strong>
                                         </Col>
                                         <Col>
-                                            <strong>${cart.totalPrice.toFixed(2)}</strong>
+                                            <strong>${totalPrice.toFixed(2)}</strong>
                                         </Col>
                                     </Row>
                                 </ListGroup.Item>
