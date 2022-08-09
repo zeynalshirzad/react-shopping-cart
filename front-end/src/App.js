@@ -15,6 +15,7 @@ import SigninPage from './pages/signin/SigninPage'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ShippingAddressPage from './pages/shipping/ShippingAddressPage'
+import SignupPage from './pages/signup/SignupPage'
 
 function App() {
   const { state: ctxState, dispatch: ctxDispatch } = useContext(Store)
@@ -76,6 +77,7 @@ function App() {
               <Route path='/product/:slug' element={<ProductPage />} />
               <Route path='/cart' element={<CartPage />} />
               <Route path='/signin' element={<SigninPage />} />
+              <Route path='/signup' element={<SignupPage />} />
               <Route path='/shipping' element={<ShippingAddressPage />} />
             </Routes>
           </Container>
