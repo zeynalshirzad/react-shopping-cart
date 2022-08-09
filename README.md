@@ -104,3 +104,6 @@
 26. Create Payment Method Page
     1. create input forms
     2. handle submit
+27. Create Place Order Page
+    1. show cart items, payment and address
+    2. calculate order summary

@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom"
 
 export default function PaymentMethodPage() {
 
-  debugger
   const { state: ctxState, dispatch: ctxDispatch } = useContext(Store)
   const { cart: { shippingAddress, paymentMethod } } = ctxState
 
