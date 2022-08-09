@@ -17,7 +17,6 @@ export default function Product({ product }) {
     const addToCartHandler = async () => {
         const existItem = cartItems.find(p => p._id === product._id)
         const quantity = existItem ? existItem.quantity + 1 : 1
-        debugger
         const { data } = await axios.get(`/api/products/${product._id}`)
         if (data.countInStock < quantity) {
             window.alert('Sorry. Product is out of stock')
