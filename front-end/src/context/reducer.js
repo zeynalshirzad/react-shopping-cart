@@ -3,6 +3,7 @@ import produce from 'immer'
 export const initalState = {
     userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null,
     cart: {
+        shippingAddress: localStorage.getItem('shippingAddress') ? localStorage.getItem('shippingAddress') : {},
         cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
     }
 }
@@ -12,7 +13,8 @@ const actionTypes = {
     CART_UPDATE_ITEM_QUANTITY: 'CART_UPDATE_ITEM_QUANTITY',
     CART_DELETE_ITEM: 'CART_DELETE_ITEM',
     USER_SIGNIN: 'USER_SIGNIN',
-    USER_SIGNOUT: 'USER_SIGNOUT'
+    USER_SIGNOUT: 'USER_SIGNOUT',
+    SAVE_SHIPPING_ADDRESS: 'SAVE_SHIPPING_ADDRESS'
 }
 export const reducer = produce((state, action) => {
     switch (action.type) {
@@ -39,6 +41,11 @@ export const reducer = produce((state, action) => {
             break
         case actionTypes.USER_SIGNOUT:
             state.userInfo = null
+            state.cart.shippingAddress = {}
+            state.cart.cartItems  = []
+            break
+        case actionTypes.SAVE_SHIPPING_ADDRESS:
+            state.cart.shippingAddress = action.payload
             break
         default:
             break
