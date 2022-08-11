@@ -16,7 +16,8 @@ const actionTypes = {
     USER_SIGNIN: 'USER_SIGNIN',
     USER_SIGNOUT: 'USER_SIGNOUT',
     SAVE_SHIPPING_ADDRESS: 'SAVE_SHIPPING_ADDRESS',
-    SAVE_PAYMENT_METHOD: 'SAVE_PAYMENT_METHOD'
+    SAVE_PAYMENT_METHOD: 'SAVE_PAYMENT_METHOD',
+    CART_CLEAR: 'CART_CLEAR'
 }
 export const reducer = produce((state, action) => {
     switch (action.type) {
@@ -37,6 +38,9 @@ export const reducer = produce((state, action) => {
             const deletedItemId = action.payload
             state.cart.cartItems = state.cart.cartItems.filter(p => p._id !== deletedItemId)
             localStorage.setItem('cartItems', JSON.stringify(state.cart.cartItems))
+            break
+        case actionTypes.CART_CLEAR:
+            state.cart.cartItems = []
             break
         case actionTypes.USER_SIGNIN:
             state.userInfo = action.payload

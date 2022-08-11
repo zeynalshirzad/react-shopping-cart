@@ -14,3 +14,25 @@ export const generateToken = (user) => {
         }
     )
 }
+
+export const isAuth = (req, res, next) => {
+    const authorization = req.headers.authorization
+    if (authorization) {
+        console.log(authorization)
+        const [, token] = authorization.split(' ')
+        jwt.verify(
+            token,
+            process.env.JWT_SECRET,
+            (err, decode) => {
+                if (err) {
+                    res.status(404).send({ message: 'Invalid Token' })
+                } else {
+                    req.user = decode
+                    next()
+                }
+            }
+        )
+    } else {
+        res.status(404).send({ message: 'Not Token' })
+    }
+}

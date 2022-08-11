@@ -5,16 +5,23 @@ import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useReducer } from "react"
 import { Store } from '../../context/Store'
 import { Link, useNavigate } from 'react-router-dom'
+import placeOrderReducer, { initalState } from './placeOrderReducer'
+import { toast } from "react-toastify"
+import { getError } from "../../util"
+import axios from "axios"
+import Loading from "../../components/utils/Loading"
 
 export default function PlaceOrderPage() {
 
-    const { state: ctxState } = useContext(Store)
-    const { cart } = ctxState
+    const { state: ctxState, dispatch: ctxDispatch } = useContext(Store)
+    const { cart, userInfo } = ctxState
 
     const navigate = useNavigate()
+
+    const [state, dispatch] = useReducer(placeOrderReducer, initalState)
 
     const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100
 
@@ -26,7 +33,33 @@ export default function PlaceOrderPage() {
     const totalPrice = itemsPrice + shippingPrice + taxPrice
 
     const placeOrderHandler = async () => {
-
+        try {
+            dispatch({ type: 'CREATE_REQUEST' })
+            const { data } = await axios.post(
+                '/api/orders',
+                {
+                    orderItems: cart.cartItems,
+                    shippingAddress: cart.shippingAddress,
+                    paymentMethod: cart.paymentMethod,
+                    itemsPrice,
+                    shippingPrice,
+                    taxPrice,
+                    totalPrice
+                },
+                {
+                    headers: {
+                        authorization: `Bearer ${userInfo.token}`
+                    }
+                }
+            )
+            ctxDispatch({type: 'CART_CLEAR'})
+            dispatch({ type: 'CREATE_SUCCESS'})
+            localStorage.removeItem('cartItems')
+            navigate(`/order/${data.order._id}`)
+        } catch (err) {
+            dispatch({ type: 'CREATE_FAIL' })
+            toast.error(getError(err))
+        }
     }
 
     useEffect(() => {
@@ -135,6 +168,7 @@ export default function PlaceOrderPage() {
                                             Place Order
                                         </Button>
                                     </div>
+                                    {state.loading && <Loading />}
                                 </ListGroup.Item>
                             </ListGroup>
                         </Card.Body>
