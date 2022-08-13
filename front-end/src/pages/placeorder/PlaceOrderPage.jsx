@@ -52,8 +52,8 @@ export default function PlaceOrderPage() {
                     }
                 }
             )
-            ctxDispatch({type: 'CART_CLEAR'})
-            dispatch({ type: 'CREATE_SUCCESS'})
+            ctxDispatch({ type: 'CART_CLEAR' })
+            dispatch({ type: 'CREATE_SUCCESS' })
             localStorage.removeItem('cartItems')
             navigate(`/order/${data.order._id}`)
         } catch (err) {
@@ -66,7 +66,10 @@ export default function PlaceOrderPage() {
         if (!cart.paymentMethod) {
             navigate('/payment')
         }
-    }, [cart.paymentMethod, navigate])
+        if (cart.cartItems.length === 0) {
+            navigate('/')
+        }
+    }, [cart.paymentMethod, navigate, cart.cartItems])
 
     return (
         <div>
@@ -82,7 +85,7 @@ export default function PlaceOrderPage() {
                             <Card.Title>Shipping</Card.Title>
                             <Card.Text>
                                 <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
-                                <strong>Address:</strong> {cart.shippingAddress.address}
+                                <strong>Address:</strong> {cart.shippingAddress.address},
                                 {cart.shippingAddress.city},{cart.shippingAddress.postalCode},
                                 {cart.shippingAddress.country}
                             </Card.Text>
