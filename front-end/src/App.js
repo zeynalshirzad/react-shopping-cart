@@ -20,10 +20,12 @@ import PaymentMethodPage from './pages/payment/PaymentMethodPage'
 import PlaceOrderPage from './pages/placeorder/PlaceOrderPage'
 import OrderPage from './pages/order/OrderPage'
 import OrderHistoryPage from './pages/orderhistory/OrderHistoryPage'
+import UserProfilePage from './pages/profile/UserProfilePage'
 
 function App() {
   const { state: ctxState, dispatch: ctxDispatch } = useContext(Store)
   const { cart, userInfo } = ctxState
+
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' })
     localStorage.removeItem('userInfo')
@@ -64,7 +66,7 @@ function App() {
                       </LinkContainer>
                       <NavDropDown.Divider />
                       <Link className="dropdown-item"
-                        to="#signout"
+                        to="/signin"
                         onClick={signoutHandler}>
                         Sign Out
                       </Link>
@@ -85,6 +87,7 @@ function App() {
               <Route path='/cart' element={<CartPage />} />
               <Route path='/signin' element={<SigninPage />} />
               <Route path='/signup' element={<SignupPage />} />
+              <Route path='/profile' element={<UserProfilePage />} />
               <Route path='/shipping' element={<ShippingAddressPage />} />
               <Route path='/payment' element={<PaymentMethodPage />} />
               <Route path='/placeorder' element={<PlaceOrderPage />} />
