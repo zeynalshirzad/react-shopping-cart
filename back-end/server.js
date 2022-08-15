@@ -1,5 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import path from 'path'
 import 'dotenv/config'
 import seedRouter from './routes/seedRoutes.js'
 import productRouter from './routes/productRoutes.js'
@@ -28,6 +29,13 @@ app.use('/api/seed', seedRouter)
 app.use('/api/products', productRouter)
 app.use('/api/users', userRouter)
 app.use('/api/orders', orderRouter)
+
+// for serving on operational environment
+const __dirname = path.resolve()
+app.use(express.static(path.join(__dirname, '/front-end/build')))
+app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/front-end/build/index.html'))
+})
 
 app.use((err, req, res, next) => {
     res.status(500).send({ message: err.message })
