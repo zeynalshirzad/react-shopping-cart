@@ -13,8 +13,8 @@
     "url": "git+https://github.com/zeynalshirzad/react-shopping-cart.git"
   },
   "engines": {
-    "node": ">= 8",
-    "npm": ">= 3"
+    "node": "17.x",
+    "npm": "8.x"
   },
   "author": "",
   "license": "ISC",
