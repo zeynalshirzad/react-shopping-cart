@@ -31,7 +31,7 @@ main {
   justify-content: center;
 }
 
-.btn-primary {
+.btn-primary, .btn-outline-primary {
   background-color: #f0c040;
   color: #000000;
 }
@@ -45,4 +45,30 @@ main {
 }
 .small-container {
   max-width: 600px;
+}
+
+/* sidebar */
+.navbar-brand {
+  font-weight: bold;
+}
+.side-navbar {
+  width: 240px;
+  height: 100%;
+  position: absolute;
+  left: -300px;
+  background-color: #100901;
+  transition: 0.5s;
+}
+
+.site-container {
+  transition: 0.4s;
+}
+.active-cont {
+  margin-left: 240px;
+}
+.active-nav {
+  left: 0;
+}
+.text-bold {
+  font-weight: bold;
 }
