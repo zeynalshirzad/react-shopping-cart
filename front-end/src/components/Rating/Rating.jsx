@@ -1,5 +1,5 @@
 import './rating.css'
-export default function Rating({ rating, numReviews }) {
+export default function Rating({ rating, numReviews, caption }) {
     return (
         <div className="rating">
             <span>
@@ -27,7 +27,11 @@ export default function Rating({ rating, numReviews }) {
                     : rating >= 4.5 ? 'fas fa-star-half-alt'
                         : 'far fa-star'} />
             </span>
-            <span> {numReviews} reviews</span>
-        </div>
+            {caption ? (
+                <span>{caption}</span>
+            ) : (
+                <span> {numReviews} reviews</span>
+            )}
+        </div >
     )
 }

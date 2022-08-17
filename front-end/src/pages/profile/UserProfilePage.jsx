@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useContext, useEffect, useReducer, useState } from "react"
+import { useContext, useReducer, useState } from "react"
 import { toast } from "react-toastify"
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -16,7 +16,7 @@ export default function UserProfilePage() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
-    const [{ loading }, dispatch] = useReducer(reducer, {
+    const [, dispatch] = useReducer(reducer, {
         loading: false,
     })
 
